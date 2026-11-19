@@ -104,6 +104,7 @@ h2{font-size:clamp(40px,6vw,88px);letter-spacing:-.045em;line-height:.95;font-we
 .tl{position:relative;padding-left:34px}
 .tl::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line)}
 .tl .fill{position:absolute;left:0;top:0;width:1px;height:0;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.tl-dot{position:absolute;left:-5px;top:0;width:11px;height:11px;margin-top:-5.5px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--glow),0 0 16px var(--accent);opacity:0;transition:opacity .4s;z-index:2;pointer-events:none}
 .job{position:relative;padding:10px 0 40px}
 .job::before{content:"";position:absolute;left:-39px;top:18px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:1px solid var(--accent)}
 .job h3{font-size:clamp(24px,3vw,36px);letter-spacing:-.02em;margin:8px 0}

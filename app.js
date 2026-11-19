@@ -41,7 +41,7 @@
     experience: () => `
       <section id="experience"><div class="wrap">
         <div class="head reveal"><div><div class="eyebrow">${esc(S.experience.eyebrow)}</div><h2>${esc(S.experience.title)}</h2></div></div>
-        <div class="tl" id="tl"><div class="fill" id="fill"></div>
+        <div class="tl" id="tl"><div class="fill" id="fill"></div><span class="tl-dot" id="dot" aria-hidden="true"></span>
           ${S.experience.items.map((j) => `
             <div class="job reveal">
               <span class="mono">${esc(j.period)} · ${esc(j.place)}</span>
@@ -193,10 +193,13 @@
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
 
-  const tl = $('#tl'), fill = $('#fill');
-  if (tl && fill) addEventListener('scroll', () => {
+  const tl = $('#tl'), fill = $('#fill'), dot = $('#dot');
+  if (tl && fill && dot) addEventListener('scroll', () => {
     const r = tl.getBoundingClientRect();
-    fill.style.height = Math.min(Math.max((innerHeight * 0.6 - r.top) / r.height, 0), 1) * 100 + '%';
+    const p = Math.min(Math.max((innerHeight * 0.6 - r.top) / r.height, 0), 1) * 100;
+    fill.style.height = p + '%';
+    dot.style.top = p + '%';
+    dot.style.opacity = p > 0 ? 1 : 0;
   }, { passive: true });
 
   /* ---------- rotating role line ---------- */
