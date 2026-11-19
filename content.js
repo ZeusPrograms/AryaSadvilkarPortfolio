@@ -15,6 +15,10 @@ window.SITE = {
     photo: "assets/photo.jpg",
     photoAlt: "Portrait of Arya Sadvilkar",
     email: "arya.sadvilkar@gmail.com",
+    phone: "+91 77386 84644",
+    whatsapp: "917738684644",
+    resume: "assets/Arya_Sadvilkar_CV.pdf",
+    // Leave phone, whatsapp or resume empty ("") to hide that button.
     location: "Mumbai, India",
     links: [
       { label: "LinkedIn", url: "https://www.linkedin.com/in/arya-sadvilkar/" },

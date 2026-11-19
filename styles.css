@@ -13,6 +13,15 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .btn.solid{background:var(--accent);color:var(--onAccent);border-color:var(--accent)}
 .btn.solid:hover{box-shadow:0 10px 30px var(--glow)}
 .btn:not(.solid):hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.btn.fill{position:relative;overflow:hidden;isolation:isolate}
+.btn.fill::after{content:"";position:absolute;inset:0;background:var(--fg);transform:translateY(101%);transition:transform .45s cubic-bezier(.7,0,.2,1);z-index:-1}
+.btn.fill:hover::after{transform:none}
+.btn.fill:hover{color:var(--bg);border-color:var(--fg)}
+.btn.solid.fill::after{background:var(--fg)}
+.btn.solid.fill:hover{color:var(--bg);border-color:var(--fg)}
+.ico{width:17px;height:17px;flex-shrink:0;transition:transform .4s cubic-bezier(.2,.7,.1,1)}
+.btn:hover .ico{transform:translateY(2px)}
+.btn.wa:hover .ico{transform:scale(1.12) rotate(-8deg)}
 .btn.done{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 
 /* preloader */
@@ -85,6 +94,8 @@ section{padding:150px 0;position:relative}
 .head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:60px;gap:20px;flex-wrap:wrap}
 .eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
 h2{font-size:clamp(40px,6vw,88px);letter-spacing:-.045em;line-height:.95;font-weight:700;margin-top:10px}
+.word{opacity:.22;transition:opacity .4s ease}
+.word.on{opacity:1}
 .lead-text{font-size:clamp(26px,3.6vw,50px);line-height:1.2;letter-spacing:-.03em;font-weight:500;max-width:1000px}
 .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:70px}
 .facts div{background:var(--bg);padding:28px}
@@ -142,6 +153,7 @@ h2{font-size:clamp(40px,6vw,88px);letter-spacing:-.045em;line-height:.95;font-we
 .bigmail{font-size:clamp(20px,2.6vw,30px);letter-spacing:-.03em;font-weight:700;word-break:break-all;transition:transform .4s cubic-bezier(.2,.7,.1,1)}
 .cta-row,.socials{display:flex;gap:10px;flex-wrap:wrap}
 .meta-note{margin-top:22px;color:var(--muted);font-size:15px}
+.phone-note{margin-top:-6px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
 .tags span{font-size:14px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
 #orb{width:100%;max-width:300px;height:280px;display:block;margin:0 0 18px}

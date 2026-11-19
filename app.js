@@ -7,6 +7,13 @@
   const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const on = (sec) => sec && sec.show !== false;
   const P = S.person;
+  const tel = (P.phone || '').replace(/[^+\d]/g, '');
+  const ICON = {
+    download: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+    phone: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>',
+    wa: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5A8.5 8.5 0 1 1 21 11.5z"/></svg>',
+    mail: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>'
+  };
 
   /* ---------- theme ---------- */
   let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -26,7 +33,7 @@
     about: () => `
       <section id="about"><div class="wrap">
         <div class="mono reveal">${esc(S.about.eyebrow)}</div>
-        <p class="lead-text reveal" style="margin-top:28px">${esc(S.about.text)}</p>
+        <p class="lead-text light-text" style="margin-top:28px">${S.about.text.split(' ').map((w) => `<span class="word">${esc(w)}</span>`).join(' ')}</p>
         <h2 class="reveal" style="font-size:clamp(26px,3vw,40px);margin-top:20px;letter-spacing:-.02em">${esc(S.about.title)}</h2>
         <div class="facts reveal">${S.about.facts.map(([k, v]) => `<div><strong>${esc(k)}</strong><span>${esc(v)}</span></div>`).join('')}</div>
       </div></section>`,
@@ -108,8 +115,15 @@
           <div class="contact-card">
             <span class="mono">Email</span>
             <a class="bigmail" id="mail" href="mailto:${esc(P.email)}">${esc(P.email)}</a>
-            <div class="cta-row"><button class="btn solid" id="copy" type="button">Copy email</button><a class="btn" href="mailto:${esc(P.email)}">Write to me</a></div>
-            <div class="socials">${P.links.map((l) => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join('')}</div>
+            <div class="cta-row"><button class="btn solid" id="copy" type="button">Copy email</button><a class="btn fill" href="mailto:${esc(P.email)}">${ICON.mail}Write to me</a></div>
+            ${P.phone ? `
+            <span class="mono">Phone</span>
+            <a class="bigmail" href="tel:${tel}">${esc(P.phone)}</a>
+            <div class="cta-row">
+              <a class="btn solid fill" href="tel:${tel}">${ICON.phone}Call</a>
+              ${P.whatsapp ? `<a class="btn fill wa" href="https://wa.me/${esc(P.whatsapp)}" target="_blank" rel="noopener">${ICON.wa}WhatsApp</a>` : ''}
+            </div>` : ''}
+            <div class="socials">${P.links.map((l) => `<a class="btn" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join('')}${P.resume ? `<a class="btn fill" href="${esc(P.resume)}" download>${ICON.download}${esc(P.resumeLabel || 'Download CV')}</a>` : ''}</div>
           </div>
         </div>
       </div></section>`
@@ -131,7 +145,7 @@
           <h1 class="name">${[P.first, P.last].map((w) => `<span><span class="w">${esc(w)}</span></span>`).join('')}</h1>
           <p class="rotator">I work as a <span class="rot"><span class="rot-track" id="rot">${P.roles.map((r) => `<b>${esc(r)}</b>`).join('')}</span></span></p>
           <p class="intro">${esc(P.intro)}</p>
-          <div class="cta"><a class="btn solid" href="#${shown.includes('research') ? 'research' : 'about'}">${shown.includes('research') ? 'Read the research' : 'About me'}</a><a class="btn" href="#contact">Get in touch</a></div>
+          <div class="cta"><a class="btn solid" href="#${shown.includes('research') ? 'research' : 'about'}">${shown.includes('research') ? 'Read the research' : 'About me'}</a>${P.resume ? `<a class="btn fill" href="${esc(P.resume)}" download>${ICON.download}Download CV</a>` : ''}<a class="btn" href="#contact">Get in touch</a></div>
         </div>
         <div class="hero-visual">
           <div class="panel"></div>
@@ -161,6 +175,20 @@
 
   const nav = $('#nav');
   addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 40), { passive: true });
+
+  /* about text: words light up as you scroll past */
+  const words = [...document.querySelectorAll('.word')];
+  const lit = document.querySelector('.light-text');
+  if (words.length && lit) {
+    const update = () => {
+      const r = lit.getBoundingClientRect();
+      const p = Math.min(Math.max((innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.3), 0), 1);
+      const n = Math.floor(p * words.length);
+      words.forEach((w, i) => w.classList.toggle('on', reduce || i < n));
+    };
+    addEventListener('scroll', update, { passive: true });
+    update();
+  }
 
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
